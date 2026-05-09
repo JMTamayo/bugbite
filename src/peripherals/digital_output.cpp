@@ -5,6 +5,14 @@ namespace peripherals
 
     DigitalOutput::DigitalOutput(gpio_num_t pin, bool activeHigh) : pin_(pin), activeHigh_(activeHigh)
     {
+        gpio_config_t cfg = {
+            .pin_bit_mask = 1ULL << pin_,
+            .mode = GPIO_MODE_OUTPUT,
+            .pull_up_en = GPIO_PULLUP_DISABLE,
+            .pull_down_en = GPIO_PULLDOWN_DISABLE,
+            .intr_type = GPIO_INTR_DISABLE,
+        };
+        gpio_config(&cfg);
     }
 
     DigitalOutput::~DigitalOutput()
@@ -14,14 +22,6 @@ namespace peripherals
 
     void DigitalOutput::begin()
     {
-        gpio_config_t cfg = {
-            .pin_bit_mask = 1ULL << pin_,
-            .mode = GPIO_MODE_OUTPUT,
-            .pull_up_en = GPIO_PULLUP_DISABLE,
-            .pull_down_en = GPIO_PULLDOWN_DISABLE,
-            .intr_type = GPIO_INTR_DISABLE,
-        };
-        gpio_config(&cfg);
         off();
     }
 

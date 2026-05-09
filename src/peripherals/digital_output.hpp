@@ -8,10 +8,9 @@ namespace peripherals
     /// @brief Abstract base class for a single-channel GPIO digital output peripheral.
     ///
     /// Implements the common GPIO control logic shared by all digital output actuators:
-    /// hardware initialization, active-level abstraction, and state tracking.
-    /// Concrete subclasses inherit this behaviour. The destructor drives the output
-    /// to the off state before the object is released, ensuring all actuators are
-    /// left inactive regardless of the subclass.
+    /// active-level abstraction, state tracking, and safe shutdown on destruction.
+    /// GPIO hardware configuration is performed in the constructor, guaranteeing the
+    /// pin is always ready to use regardless of whether begin() is overridden by a subclass.
     ///
     /// The constructor is protected to prevent direct instantiation — only derived
     /// classes may be constructed.
@@ -21,12 +20,13 @@ namespace peripherals
         /// @brief Destructor — drives the output to the off state before releasing the object.
         virtual ~DigitalOutput();
 
-        /// @brief Configure the GPIO as a push-pull output and drive it to the initial (off) state.
+        /// @brief Drive the output to its initial (off) state.
         ///
-        /// Must be called once after construction and before any other method.
-        /// Separating initialization from construction allows objects to be declared
-        /// at any scope and have their hardware setup deferred until needed.
-        void begin();
+        /// Call once after construction to establish a known starting state.
+        /// GPIO hardware configuration is already handled by the constructor,
+        /// so subclasses may override this method for additional setup without
+        /// affecting the underlying pin configuration.
+        virtual void begin();
 
         /// @brief Drive the output to its active (on) state.
         void on();
@@ -41,7 +41,10 @@ namespace peripherals
         [[nodiscard]] bool isOn() const;
 
     protected:
-        /// @brief Construct a new DigitalOutput.
+        /// @brief Construct a new DigitalOutput and configure the underlying GPIO.
+        ///
+        /// Configures the pin as a push-pull output immediately, so the hardware is
+        /// ready to use as soon as the object exists.
         /// @param pin        GPIO number to control.
         /// @param activeHigh true if a HIGH level activates the output (active-high);
         ///                   false if a LOW level activates it (active-low).
