@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help build upload monitor flash clean menuconfig fmt
+.PHONY: help build upload monitor flash clean menuconfig fmt docs
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage: make \033[36m<command>\033[0m\n\nCommands:\n"} \
@@ -28,3 +28,6 @@ menuconfig: ## Open the ESP-IDF SDK configuration menu
 
 fmt: ## Format all C++ source files with clang-format
 	@find src include -name "*.cpp" -o -name "*.hpp" 2>/dev/null | xargs clang-format -i
+
+docs: ## Generate the API documentation with Doxygen (build/html)
+	doxygen Doxyfile

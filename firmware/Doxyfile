@@ -1,0 +1,26 @@
+# Doxygen configuration for the bugbite firmware.
+# Only non-default options are set; Doxygen fills in the rest.
+# Generate locally with `make docs`; CI publishes the HTML to GitHub Pages.
+
+PROJECT_NAME           = "bugbite firmware"
+PROJECT_BRIEF          = "ESP32-C3-SuperMini smart relay firmware"
+
+OUTPUT_DIRECTORY       = build
+HTML_OUTPUT            = html
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+INPUT                  = src include
+RECURSIVE              = YES
+FILE_PATTERNS          = *.hpp *.cpp
+
+# Document every entity, including those without comments, and show the
+# namespace/class structure used across the modules.
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+JAVADOC_AUTOBRIEF      = YES
+
+# Class/collaboration diagrams (graphviz is installed in CI).
+HAVE_DOT               = YES
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = NO
