@@ -1,0 +1,52 @@
+name: Provisioner CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "provisioner/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "provisioner/**"
+  workflow_dispatch:
+
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          working-directory: provisioner
+
+      - name: Install dependencies
+        run: uv sync
+        working-directory: provisioner
+
+      - name: Check formatting
+        run: uv run ruff format --check src/
+        working-directory: provisioner
+
+  typecheck:
+    name: Typecheck
+    needs: format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          working-directory: provisioner
+
+      - name: Install dependencies
+        run: uv sync
+        working-directory: provisioner
+
+      - name: Run mypy
+        run: uv run mypy src/
+        working-directory: provisioner
