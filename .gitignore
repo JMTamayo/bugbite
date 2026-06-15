@@ -67,12 +67,3 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
-
-# vscode
-.vscode/
-
-# Mac OS
-.DS_Store
-
-# Secrets
-include/secrets.hpp
