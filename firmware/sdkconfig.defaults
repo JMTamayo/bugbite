@@ -1,0 +1,18 @@
+# ESP-IDF default configuration for bugbite (ESP32-C3-SuperMini).
+# These values seed sdkconfig on the first build; tweak with `pio run -t menuconfig`.
+
+# --- Console over native USB Serial/JTAG -------------------------------------
+# The SuperMini has no UART-to-USB bridge: logs and the monitor go through the
+# ESP32-C3 built-in USB Serial/JTAG controller.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+
+# --- Flash -------------------------------------------------------------------
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_DIO=y
+
+# --- FreeRTOS ----------------------------------------------------------------
+CONFIG_FREERTOS_HZ=1000
+
+# --- Logging -----------------------------------------------------------------
+CONFIG_LOG_DEFAULT_LEVEL_DEBUG=y
