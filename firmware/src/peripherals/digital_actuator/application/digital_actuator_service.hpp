@@ -20,19 +20,14 @@ class DigitalActuatorService {
    */
   DigitalActuatorService(IDigitalActuator &driver);
 
-  virtual ~DigitalActuatorService() = default;
-
   /**
    * @brief Drives the line to the given logical level.
-   *
-   * Virtual so concrete peripherals (relay, led, ...) can add their own
-   * logging while reusing the base behavior.
    *
    * @param level Logical level to apply.
    * @return      ESP_OK on success, ESP_ERR_INVALID_STATE if the driver is not
    *              initialized, or an ESP-IDF error code on failure.
    */
-  virtual esp_err_t setLevel(Level level);
+  esp_err_t setLevel(Level level);
 
   /**
    * @brief Returns the current logical level.
