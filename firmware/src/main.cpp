@@ -8,6 +8,7 @@
 #include "connectivity/config/infrastructure/flash_mqtt_config.hpp"
 #include "connectivity/config/infrastructure/flash_wifi_config.hpp"
 #include "connectivity/provisioning/provisioning.hpp"
+#include "connectivity/wifi/wifi.hpp"
 #include "peripherals/flash_memory/flash_memory.hpp"
 #include "peripherals/led/led.hpp"
 #include "peripherals/relay/relay.hpp"
@@ -15,6 +16,10 @@
 static const char *TAG = "app/main";
 
 static flash_memory::FlashMemory flashMemory;
+static relay::Relay loadRelay(config::relay::GPIO, config::relay::INVERTED);
+static led::Led builtinLed(config::builtin_led::GPIO,
+                           config::builtin_led::INVERTED);
+
 static connectivity::config::FlashDeviceConfig deviceConfig(
     flashMemory, {config::nvs::NAMESPACE, config::device::ID_KEY,
                   config::device::PROJECT_NAME});
@@ -25,9 +30,7 @@ static connectivity::config::FlashMqttConfig mqttConfig(
     flashMemory,
     {config::nvs::NAMESPACE, config::mqtt::HOST_KEY, config::mqtt::PORT_KEY,
      config::mqtt::USER_KEY, config::mqtt::PASSWORD_KEY});
-static relay::Relay loadRelay(config::relay::GPIO, config::relay::INVERTED);
-static led::Led builtinLed(config::builtin_led::GPIO,
-                           config::builtin_led::INVERTED);
+
 static connectivity::provisioning::Provisioning provisioning(
     deviceConfig, wifiConfig, mqttConfig,
     {.service = config::ble::SERVICE_UUID,
@@ -39,6 +42,10 @@ static connectivity::provisioning::Provisioning provisioning(
      .mqttUser = config::ble::MQTT_USER_UUID,
      .mqttPassword = config::ble::MQTT_PASSWORD_UUID});
 
+static connectivity::wifi::Wifi wifi(wifiConfig,
+                                     config::wifi::RECONNECT_DELAY_MS,
+                                     config::wifi::MAX_TX_POWER);
+
 extern "C" void app_main() {
   if (beginPeripherals(flashMemory, loadRelay, builtinLed) != ESP_OK) {
     ESP_LOGE(TAG, "setup failed; halting");
@@ -49,6 +56,11 @@ extern "C" void app_main() {
   esp_err_t err = provisioning.start();
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "provisioning start failed: %s", esp_err_to_name(err));
+  }
+
+  err = wifi.start();
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "wifi start failed: %s", esp_err_to_name(err));
   }
 
   // Idle loop: keeps app_main alive until the real application logic is added.

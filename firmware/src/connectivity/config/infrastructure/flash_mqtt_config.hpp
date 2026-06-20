@@ -37,16 +37,68 @@ class FlashMqttConfig : public IMqttConfig {
   FlashMqttConfig(flash_memory::FlashService &flash,
                   const MqttConfigKeys &keys);
 
+  /**
+   * @brief Reads the broker host from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if unset, or an ESP-IDF error.
+   */
   esp_err_t getHost(std::string &out) const override;
+
+  /**
+   * @brief Persists the broker host.
+   *
+   * @param value Value to store.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t setHost(const std::string &value) override;
 
+  /**
+   * @brief Reads the broker port from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if unset, or an ESP-IDF error.
+   */
   esp_err_t getPort(std::string &out) const override;
+
+  /**
+   * @brief Persists the broker port.
+   *
+   * @param value Value to store.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t setPort(const std::string &value) override;
 
+  /**
+   * @brief Reads the user from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if unset, or an ESP-IDF error.
+   */
   esp_err_t getUser(std::string &out) const override;
+
+  /**
+   * @brief Persists the user.
+   *
+   * @param value Value to store.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t setUser(const std::string &value) override;
 
+  /**
+   * @brief Reads the password from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if unset, or an ESP-IDF error.
+   */
   esp_err_t getPassword(std::string &out) const override;
+
+  /**
+   * @brief Persists the password.
+   *
+   * @param value Value to store.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t setPassword(const std::string &value) override;
 
  private:

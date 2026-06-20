@@ -26,3 +26,8 @@ CONFIG_BT_NIMBLE_ROLE_PERIPHERAL=y
 CONFIG_BT_NIMBLE_ROLE_BROADCASTER=y
 CONFIG_BT_NIMBLE_ROLE_CENTRAL=n
 CONFIG_BT_NIMBLE_ROLE_OBSERVER=n
+
+# --- Wi-Fi station + BLE/Wi-Fi software coexistence --------------------------
+# The connectivity/wifi module runs in station mode alongside BLE provisioning;
+# ESP32-C3 shares one radio, so software coexistence must be enabled.
+CONFIG_ESP_COEX_SW_COEXIST_ENABLE=y
