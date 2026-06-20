@@ -27,7 +27,8 @@ constexpr const char *PASSWORD_KEY = "wifi_password";
 
 constexpr std::uint32_t RECONNECT_DELAY_MS = 5000;
 
-// Max WiFi TX power in 0.25 dBm units (34 = 8.5 dBm); lowered for the SuperMini antenna.
+// Max WiFi TX power in 0.25 dBm units (34 = 8.5 dBm); lowered for the SuperMini
+// antenna.
 constexpr std::int8_t MAX_TX_POWER = 34;
 
 }  // namespace wifi
