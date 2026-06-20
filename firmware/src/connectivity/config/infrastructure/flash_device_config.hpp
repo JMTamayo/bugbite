@@ -34,7 +34,21 @@ class FlashDeviceConfig : public IDeviceConfig {
   FlashDeviceConfig(flash_memory::FlashService &flash,
                     const DeviceConfigParams &params);
 
+  /**
+   * @brief Reads the device id from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if not provisioned, or an ESP-IDF
+   *            error.
+   */
   esp_err_t getId(std::string &out) const override;
+
+  /**
+   * @brief Returns the injected project name.
+   *
+   * @param out Receives the project name.
+   * @return    ESP_OK on success.
+   */
   esp_err_t getProjectName(std::string &out) const override;
 
  private:

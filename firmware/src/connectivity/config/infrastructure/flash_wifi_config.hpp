@@ -35,10 +35,36 @@ class FlashWifiConfig : public IWifiConfig {
   FlashWifiConfig(flash_memory::FlashService &flash,
                   const WifiConfigKeys &keys);
 
+  /**
+   * @brief Reads the SSID from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if unset, or an ESP-IDF error.
+   */
   esp_err_t getSsid(std::string &out) const override;
+
+  /**
+   * @brief Persists the SSID.
+   *
+   * @param value Value to store.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t setSsid(const std::string &value) override;
 
+  /**
+   * @brief Reads the password from storage.
+   *
+   * @param out Receives the value on success.
+   * @return    ESP_OK, ESP_ERR_NVS_NOT_FOUND if unset, or an ESP-IDF error.
+   */
   esp_err_t getPassword(std::string &out) const override;
+
+  /**
+   * @brief Persists the password.
+   *
+   * @param value Value to store.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t setPassword(const std::string &value) override;
 
  private:
