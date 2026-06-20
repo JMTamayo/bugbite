@@ -1,21 +1,23 @@
-#include "setup.hpp"
+#include "build.hpp"
 
 #include <esp_log.h>
 
-static const char *TAG = "app/setup";
+static const char *TAG = "app/build";
 
-esp_err_t setup(flash_memory::FlashMemory &flashMemory, relay::Relay &loadRelay,
-                led::Led &builtinLed) {
+esp_err_t beginPeripherals(flash_memory::FlashMemory &flashMemory,
+                           relay::Relay &loadRelay, led::Led &builtinLed) {
   esp_err_t err = flashMemory.begin();
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "flash memory initialization failed: %s",
              esp_err_to_name(err));
+
     return err;
   }
 
   err = loadRelay.begin();
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "load relay initialization failed: %s", esp_err_to_name(err));
+
     return err;
   }
 
@@ -23,10 +25,11 @@ esp_err_t setup(flash_memory::FlashMemory &flashMemory, relay::Relay &loadRelay,
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "builtin led initialization failed: %s",
              esp_err_to_name(err));
+
     return err;
   }
 
-  ESP_LOGI(TAG, "setup completed");
+  ESP_LOGI(TAG, "peripherals initialized");
 
   return ESP_OK;
 }
