@@ -17,6 +17,9 @@ namespace flash_memory {
  */
 class FlashMemory : public FlashService {
  public:
+  /**
+   * @brief Builds the facade, wiring the owned NVS adapter into the service.
+   */
   FlashMemory();
 
   /**

@@ -39,10 +39,37 @@ class MqttService {
    */
   esp_err_t connect(StatusHandler onStatus, MessageHandler onMessage);
 
+  /**
+   * @brief Publishes a payload to a topic (pass-through to the client).
+   *
+   * @param topic   Destination topic.
+   * @param payload Message payload (may be binary).
+   * @param qos     MQTT QoS (0, 1 or 2).
+   * @param retain  Whether the broker should retain the message.
+   * @return        ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t publish(const std::string &topic, const std::string &payload,
                     int qos, bool retain);
+
+  /**
+   * @brief Subscribes to a topic (pass-through to the client).
+   *
+   * @param topic Topic filter to subscribe to.
+   * @param qos   Requested MQTT QoS.
+   * @return      ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t subscribe(const std::string &topic, int qos);
+
+  /**
+   * @brief Stops the client and disconnects from the broker.
+   *
+   * @return ESP_OK on success, or an ESP-IDF error code on failure.
+   */
   esp_err_t stop();
+
+  /**
+   * @brief Whether the client currently holds a broker connection.
+   */
   bool isConnected() const;
 
  private:
