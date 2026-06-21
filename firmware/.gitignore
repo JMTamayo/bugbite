@@ -78,6 +78,9 @@ sdkconfig
 sdkconfig.old
 sdkconfig.*.old
 
+# Environment files (local, may contain secrets)
+.env
+
 # IDE
 .vscode/
 .idea/
