@@ -40,6 +40,9 @@ constexpr const char *PORT_KEY = "mqtt_port";
 constexpr const char *USER_KEY = "mqtt_user";
 constexpr const char *PASSWORD_KEY = "mqtt_password";
 
+// Fallback broker port when none has been provisioned.
+constexpr const char *DEFAULT_PORT = "1883";
+
 }  // namespace mqtt
 
 namespace ble {

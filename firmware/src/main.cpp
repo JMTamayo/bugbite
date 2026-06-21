@@ -7,6 +7,7 @@
 #include "connectivity/config/infrastructure/flash_device_config.hpp"
 #include "connectivity/config/infrastructure/flash_mqtt_config.hpp"
 #include "connectivity/config/infrastructure/flash_wifi_config.hpp"
+#include "connectivity/mqtt/mqtt.hpp"
 #include "connectivity/provisioning/provisioning.hpp"
 #include "connectivity/wifi/wifi.hpp"
 #include "peripherals/flash_memory/flash_memory.hpp"
@@ -45,6 +46,8 @@ static connectivity::provisioning::Provisioning provisioning(
 static connectivity::wifi::Wifi wifi(wifiConfig,
                                      config::wifi::RECONNECT_DELAY_MS,
                                      config::wifi::MAX_TX_POWER);
+static connectivity::mqtt::Mqtt mqtt(mqttConfig, deviceConfig,
+                                     config::mqtt::DEFAULT_PORT);
 
 extern "C" void app_main() {
   if (beginPeripherals(flashMemory, loadRelay, builtinLed) != ESP_OK) {
@@ -61,6 +64,11 @@ extern "C" void app_main() {
   err = wifi.start();
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "wifi start failed: %s", esp_err_to_name(err));
+  }
+
+  err = mqtt.start();
+  if (err != ESP_OK) {
+    ESP_LOGE(TAG, "mqtt start failed: %s", esp_err_to_name(err));
   }
 
   // Idle loop: keeps app_main alive until the real application logic is added.
